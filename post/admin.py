@@ -39,3 +39,11 @@ class CommentAdmin(admin.ModelAdmin):
     search_fields = ('name', 'description')
     list_editable = ('active',)
     list_display_links = ('name', 'post')
+
+
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    list_display = ('title', 'post', 'created')
+    search_fields = ('title', 'description', 'post')
+    ordering = ('-created',)
+    raw_id_fields = ('post',)

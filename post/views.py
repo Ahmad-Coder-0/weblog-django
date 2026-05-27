@@ -5,7 +5,7 @@ from .forms import *
 from django.core.paginator import Paginator
 from django.views.decorators.http import require_POST
 from django.db.models import Q
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.contrib.postgres.search import TrigramSimilarity
 
 
 def index(request):
@@ -83,12 +83,11 @@ def search_post(request):
         form = SearchForm(data=request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
-            search_query = SearchQuery(query)
-            search_vector = SearchVector('title') + SearchVector('description')
-            rank_ = SearchRank(search_vector, search_query)
-            results = Post.published.annotate(
-                search=search_vector, rank=rank_).filter(search=search_query).order_by('-rank')
-
+            results1 = Post.published.annotate(
+                similarity=TrigramSimilarity('title', query)).filter(similarity__gt=0.1)
+            results2 = Post.published.annotate(
+                similarity=TrigramSimilarity('description', query)).filter(similarity__gt=0.17)
+            results = (results1 | results2).order_by('-similarity')
     context = {
         'query': query,
         'results': results,

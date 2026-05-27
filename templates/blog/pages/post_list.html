@@ -1,18 +1,24 @@
 {% extends 'blog/parent/base.html' %}
 
 {% block title %}
-	پست ها
+پست ها
 {% endblock %}
 {% block body %}
-	<h1><center>لیست پست ها</center></h1>
-    {% for post in posts %}
-        <div class="post">
-            <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
-            <p><a href="{{ post.get_absolute_url }}">{{ post.description | truncatewords:5 }}</a></p>
-        </div>
-    {% endfor %}
-    <br>
-    {% include 'blog/partials/pagination.html' with page=posts %}
-    <br>
-    <h4><a href="{% url 'post:index' %}">بازگشت به خانه</a></h4>
+<h1>
+    <center>لیست پست ها</center>
+</h1>
+{% for post in posts %}
+<div class="post">
+    <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+    <p><a href="{{ post.get_absolute_url }}">{{ post.description | truncatewords:5 }}</a></p>
+    {% if post.images %}
+    <img src="{{ post.images.first.image_file.url }}" alt="{{ post.image.first.title }}"
+        style="width: 200px; height: 100px;">
+    {% endif %}
+</div>
+{% endfor %}
+<br>
+{% include 'blog/partials/pagination.html' with page=posts %}
+<br>
+<h4><a href="{% url 'post:index' %}">بازگشت به خانه</a></h4>
 {% endblock %}

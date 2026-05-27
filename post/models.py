@@ -1,3 +1,5 @@
+from tabnanny import verbose
+
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -16,15 +18,19 @@ class Post(models.Model):
         DRAFT = 'DF', 'پیش نویس'
         REJECTED = 'RJ', 'رد شده'
 
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts', verbose_name='نویسنده')
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='posts', verbose_name='نویسنده')
 
     title = models.CharField(max_length=200, verbose_name='عنوان')
     description = models.TextField(verbose_name='جزئیات')
     slug = models.SlugField(max_length=200, verbose_name='اسلاگ')
 
-    publish = jmodels.jDateTimeField(default=timezone.now, verbose_name='تاریخ انتشار')
-    created = jmodels.jDateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
-    updated = jmodels.jDateTimeField(auto_now=True, verbose_name='تاریخ ویرایش')
+    publish = jmodels.jDateTimeField(
+        default=timezone.now, verbose_name='تاریخ انتشار')
+    created = jmodels.jDateTimeField(
+        auto_now_add=True, verbose_name='تاریخ ایجاد')
+    updated = jmodels.jDateTimeField(
+        auto_now=True, verbose_name='تاریخ ویرایش')
     status = models.CharField(max_length=2, choices=Status.choices, default=Status.DRAFT,
                               verbose_name='وضعیت')
     reading_time = models.PositiveIntegerField(verbose_name='زمان مطالعه')
@@ -84,8 +90,10 @@ class Comment(models.Model):
                              related_name='comments', verbose_name='پست')
     name = models.CharField(max_length=50, verbose_name="اسم")
     message = models.TextField(verbose_name="متن")
-    created = jmodels.jDateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
-    updated = jmodels.jDateTimeField(auto_now=True, verbose_name='تاریخ ویرایش')
+    created = jmodels.jDateTimeField(
+        auto_now_add=True, verbose_name='تاریخ ایجاد')
+    updated = jmodels.jDateTimeField(
+        auto_now=True, verbose_name='تاریخ ویرایش')
     active = models.BooleanField(verbose_name='نمایش', default=False)
 
     class Meta:
@@ -98,3 +106,26 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.name}: {self.post}"
+
+
+class Image(models.Model):
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name="images", verbose_name="پست")
+    title = models.CharField(
+        max_length=150, verbose_name="عنوان", null=True, blank=True)
+    description = models.TextField(
+        verbose_name="جزئیات", null=True, blank=True)
+    created = jmodels.jDateTimeField(
+        auto_now_add=True, verbose_name="تاریخ ایجاد")
+    image_file = models.ImageField(upload_to='post_images/')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ('-created',)
+        indexes = [
+            models.Index(fields=['-created'])
+        ]
+        verbose_name = "تصویر"
+        verbose_name_plural = "تصاویر"
