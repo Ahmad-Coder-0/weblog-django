@@ -1,0 +1,130 @@
+.pagination a{
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: cadetblue;
+    color: aliceblue;
+    text-align: center;
+    font-size: xx-large;
+    text-decoration: none;
+
+    transition: 0.3s;
+}
+
+.pagination a.active {
+    color: #005491;
+    background-color: #f1fcfc;
+    border: 2px solid cadetblue;
+    border-radius: 30px;
+}
+
+.pagination a:hover {
+    transform: scale(0.9);
+    color: #005491;
+}
+
+h1{
+    color: cadetblue;
+}
+
+h2 *{
+    color: cadetblue;
+    text-decoration: none;
+}
+
+h2  {
+    color: cadetblue;
+    text-decoration: none;
+}
+
+h3 *{
+    color: cadetblue;
+    text-decoration: none;
+}
+
+h3 {
+    color: cadetblue;
+    text-decoration: none;
+}
+
+h4 *{
+    color: cadetblue;
+    text-decoration: none;
+}
+
+p a{
+    color: cadetblue;
+    text-decoration: none;
+}
+
+.status *{
+    color: cadetblue;
+    text-decoration: none;
+}
+
+body {
+    background: #f1fcfc;
+}
+
+.post {
+    display: inline-block;
+    width: 250px;
+    height: 90px;
+    background-color: #beefef;
+    border-radius: 30px;
+    border: 5px solid cadetblue;
+    margin: 5px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    transition: 0.5s;
+}
+
+.post:hover {
+    transition-duration: 0.5s;
+    transform: scale(0.9);
+}
+
+.post h2{
+    height: 20px;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #eaf3fd;
+    border-radius: 100px;
+    width: fit-content;
+    margin: 5px auto;
+    text-align: center;
+    border-bottom: 3px solid #3e6667;
+    padding-right: 10px;
+    padding-left: 10px;
+
+    transition: 0.5s;
+}
+
+.title:hover {
+    transform: scale(1.1);
+}
+
+.description {
+    display: block;
+    background-color: #f1f3f3;
+    border: 2px solid #8d9494;
+    border-radius: 10px;
+    height: auto;
+    text-align: right;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+}
+
+.author {
+    transition: 0.5s;
+}
+
+.author:hover {
+    transform: scale(0.9);
+}

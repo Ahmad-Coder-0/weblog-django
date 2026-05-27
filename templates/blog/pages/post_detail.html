@@ -1,0 +1,38 @@
+{% extends 'blog/parent/base.html' %}
+{% load jformat %}
+{% load post_tags %}
+
+{% block title %}
+	{{ post.title }}
+{% endblock %}
+
+{% block body %}
+	<h1 dir="auto" class="title">عنوان: {{ post.title }}</h1>
+    <h3 dir="auto" class="description">جزئیات: {{ post.description|markdown }}</h3>
+    <h3 dir="auto" class="author">نویسنده: {{ post.author }}</h3>
+    <h3 dir="auto" class="author">تاریخ ایجاد: {{ post.created|jformat:"%Y/%m/%d" }}</h3>
+    <h3 dir="auto" class="author">تاریخ انتشار: {{ post.publish|jformat:"%Y/%m/%d" }}</h3>
+    <br>
+    <br>
+    {{ comments.count }} نظرات
+    <br>
+    <br>
+    {% for cm in comments %}
+        <p>اسم: {{ cm.name }}</p>
+        <p>متن: {{ cm.message|linebreaks }}</p>
+        <p>تاریخ ایجاد: {{ cm.created|jformat:"%Y/%m/%d" }}</p>
+        <hr>
+        {% empty %}
+        هیچ نظری ثبت نشده شما اولین نفر باشید 3>
+    {% endfor %}
+    
+    <br>
+    <form action="{% url 'post:post_comment' post.id %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+        <input type="submit" value="ثبت">
+    </form>
+    <br>
+    <h4><a href="{% url 'post:post_list' %}">بازگشت به لیست پست ها</a></h4>
+    <h4><a href="{% url 'post:index' %}">بازگشت به خانه</a></h4>
+{% endblock %}

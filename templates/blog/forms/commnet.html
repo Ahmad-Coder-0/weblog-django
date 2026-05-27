@@ -1,0 +1,21 @@
+{% extends 'blog/parent/base.html' %}
+{% load jformat %}
+
+{% block title %}
+	post comment
+{% endblock %}
+
+{% block body %}
+
+    {% if comment %}
+    	<p>کامنت شما ثبت شد
+        پست از بررسی مدیران سایت منتشر خواهد شد.</p>
+        <a href="{{ post.get_absolute_url }}">بازگشت به پست</a>
+    {% else %}
+    <form action="{% url 'post:post_comment' post.id %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+        <input type="submit" value="ثبت">
+    </form>
+    {% endif %}
+{% endblock %}
