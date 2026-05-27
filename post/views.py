@@ -5,6 +5,7 @@ from .forms import *
 from django.core.paginator import Paginator
 from django.views.decorators.http import require_POST
 from django.db.models import Q
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 
 
 def index(request):
@@ -82,8 +83,11 @@ def search_post(request):
         form = SearchForm(data=request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
-            results = Post.published.filter(
-                Q(title__icontains=query) | Q(description__icontains=query))
+            search_query = SearchQuery(query)
+            search_vector = SearchVector('title') + SearchVector('description')
+            rank_ = SearchRank(search_vector, search_query)
+            results = Post.published.annotate(
+                search=search_vector, rank=rank_).filter(search=search_query).order_by('-rank')
 
     context = {
         'query': query,

@@ -1,5 +1,4 @@
 <form action="{% url 'post:search_post' %}" method="get">
-    {% csrf_token %}
     <input type="text" name="query" required placeholder="دنبال چیزی هستی بنویس؟">
     <input type="submit" value="جستجو">
 </form>
