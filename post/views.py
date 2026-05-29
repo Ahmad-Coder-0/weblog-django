@@ -1,3 +1,6 @@
+from ast import Add
+
+from bson import is_valid
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
@@ -24,7 +27,10 @@ def post_list(request):
 
 
 def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk, status=Post.Status.PUBLISHED)
+    user = request.user
+    post = get_object_or_404(Post, id=pk)
+    if not user == post.author:
+        post = get_object_or_404(Post, id=pk, status=Post.Status.PUBLISHED)
     comments = post.comments.filter(active=True)
     form = CommentForm()
     context = {
@@ -48,7 +54,6 @@ def tickets(request):
                 description=form.cleaned_data['description'],
                 subject=form.cleaned_data['subject'],
             )
-            print('redirecting')
             return redirect('post:index')
     else:
         form = TicketForm()
@@ -87,10 +92,57 @@ def search_post(request):
                 similarity=TrigramSimilarity('title', query)).filter(similarity__gt=0.1)
             results2 = Post.published.annotate(
                 similarity=TrigramSimilarity('description', query)).filter(similarity__gt=0.17)
-            results = (results1 | results2).order_by('-similarity')
+            results3 = Post.images.annotate(
+                similarity=TrigramSimilarity('title', query))
+            results4 = Post.images.annotate(
+                similarity=TrigramSimilarity('description', query))
+
+            results = (results1 | results2 | results3 |
+                       results4).order_by('-similarity')
     context = {
         'query': query,
         'results': results,
     }
     print(results)
     return render(request, 'blog/pages/search.html', context)
+
+
+def profile(request):
+    user = request.user
+    posts = user.posts.all().order_by('-created')
+
+    context = {
+        'user': user,
+        'posts': posts,
+    }
+    return render(request, 'blog/pages/profile.html', context)
+
+
+def add_post(request):
+    if request.method == "POST":
+        form = AddPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            if form.cleaned_data.get('image_1'):
+                Image.objects.create(
+                    image_file=form.cleaned_data['image_1'],
+                    post=post,
+                    title=form.cleaned_data['image_1_title'],
+                    description=form.cleaned_data['image_1_description'])
+            if form.cleaned_data.get('image_2'):
+                Image.objects.create(
+                    image_file=form.cleaned_data['image_2'],
+                    post=post,
+                    title=form.cleaned_data['image_2_title'],
+                    description=form.cleaned_data['image_2_description'])
+
+            return redirect("post:profile")
+    else:
+        form = AddPostForm()
+
+        context = {
+            'form': form
+        }
+    return render(request, "blog/forms/add_post.html", context)

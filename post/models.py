@@ -1,10 +1,17 @@
-from tabnanny import verbose
-
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django_jalali.db import models as jmodels  # type: ignore
 from django.urls import reverse
+from django_resized import ResizedImageField
+import os
+import jdatetime
+from django.utils.text import slugify
+
+
+def get_jalali_upload_path(instance, filename):
+    current_year = jdatetime.datetime.now().year
+    return os.path.join('post_images', str(current_year), filename)
 
 
 class PublishedManager(models.Manager):
@@ -23,7 +30,8 @@ class Post(models.Model):
 
     title = models.CharField(max_length=200, verbose_name='عنوان')
     description = models.TextField(verbose_name='جزئیات')
-    slug = models.SlugField(max_length=200, verbose_name='اسلاگ')
+    slug = models.SlugField(
+        max_length=200, verbose_name='اسلاگ', allow_unicode=True, unique=True)
 
     publish = jmodels.jDateTimeField(
         default=timezone.now, verbose_name='تاریخ انتشار')
@@ -45,6 +53,16 @@ class Post(models.Model):
         ]
         verbose_name = 'پست'
         verbose_name_plural = 'پست ها'
+
+    def save(self, *args, **kwargs):
+
+        if not self.slug:
+            self.slug = slugify(self.title, allow_unicode=True)
+            super().save(*args, **kwargs)
+            self.slug = f"{self.slug}-{self.id}"
+            super().save(update_fields=['slug'])
+        else:
+            super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
@@ -111,16 +129,18 @@ class Comment(models.Model):
 class Image(models.Model):
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name="images", verbose_name="پست")
+    image_file = ResizedImageField(
+        upload_to=get_jalali_upload_path, size=[800, 600],
+        crop=['middle', 'center'], quality=80)
     title = models.CharField(
         max_length=150, verbose_name="عنوان", null=True, blank=True)
     description = models.TextField(
         verbose_name="جزئیات", null=True, blank=True)
     created = jmodels.jDateTimeField(
         auto_now_add=True, verbose_name="تاریخ ایجاد")
-    image_file = models.ImageField(upload_to='post_images/')
 
     def __str__(self):
-        return self.title
+        return self.title if self.title else self.image_file.name
 
     class Meta:
         ordering = ('-created',)

@@ -1,3 +1,6 @@
+from dataclasses import fields
+import re
+
 from django import forms
 from .models import *
 
@@ -100,3 +103,20 @@ class CommentForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     query = forms.CharField(label="جست و جو")
+
+
+class AddPostForm(forms.ModelForm):
+    image_1 = forms.ImageField(label='تصویر اول', required=False)
+    image_1_title = forms.CharField(
+        max_length=150, label='عنوان تصویر اول', required=False)
+    image_1_description = forms.CharField(
+        widget=forms.Textarea, label='جزئیات تصویر اول', required=False)
+    image_2 = forms.ImageField(label='تصویر دوم', required=False)
+    image_2_title = forms.CharField(
+        max_length=150, label='عنوان تصویر دوم', required=False)
+    image_2_description = forms.CharField(
+        widget=forms.Textarea, label='جزئیات تصویر دوم', required=False)
+
+    class Meta:
+        model = Post
+        fields = ('title', 'description', 'reading_time')

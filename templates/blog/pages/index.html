@@ -3,35 +3,37 @@
 {% load jformat %}
 
 {% block title %}
-	صفحه خانه
+صفحه خانه
 {% endblock %}
 
 {% block body %}
-	<h1><center>خوش آمدید</center></h1>
-    <br>
-    <h2>آمار</h2>
-    <br>
-    {% last_post_date as lpd %}
-    <div class="status">
+<h1>
+    <center>خوش آمدید</center>
+</h1>
+<br>
+<h2>آمار</h2>
+<br>
+{% last_post_date as lpd %}
+<div class="status">
     <h3>
-    <p>تعداد پست ها: {% total_posts %}</p>
-    <p>تعداد کامنت ها: {% total_comments %}</p>
-    <p>تاریخ آخرین پست: {{ lpd|jformat:"%Y/%m/%d" }}</p>
+        <p>تعداد پست ها: {% total_posts %}</p>
+        <p>تعداد کامنت ها: {% total_comments %}</p>
+        <p>تاریخ آخرین پست: {{ lpd|jformat:"%Y/%m/%d" }}</p>
     </h3>
     {% latest_posts 3 %}
     <h2>محبوب ترین پست ها</h2>
     {% most_popular_posts 3 as mpp %}
     {% for mp in mpp %}
-        <hr>
-    	<h3><a href="{{ mp.get_absolute_url }}">{{ mp.title }}: with {{ mp.comments_count }}</a></h3>
+    <hr>
+    <h3><a href="{{ mp.get_absolute_url }}">{{ mp.title }}: with {{ mp.comments_count }}</a></h3>
     {% endfor %}
 
-    </div>
-    <br>
-    <br>
-    <h3><a href="{% url 'post:post_list' %}">لیست پست ها</a></h3>
-    <h3><a href="{% url 'post:tickets' %}">تیکت ها</a></h3>
-    <h3><a href="admin/" target="_blank">ورود به پنل مدیریت</a></h3>
-    
-    
+</div>
+<br>
+<br>
+<h3><a href="{% url 'post:post_list' %}">لیست پست ها</a></h3>
+<h3><a href="{% url 'post:tickets' %}">تیکت ها</a></h3>
+<h3><a href="admin/" target="_blank">ورود به پنل مدیریت</a></h3>
+
+
 {% endblock %}

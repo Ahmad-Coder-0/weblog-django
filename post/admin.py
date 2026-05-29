@@ -8,6 +8,16 @@ admin.sites.AdminSite.site_header = 'مدیران وبلاگ'
 admin.sites.AdminSite.index_title = 'مدیریت دیتابیس و سایت'
 
 
+class ImageInline(admin.StackedInline):
+    model = Image
+    extra = 0
+
+
+class CommentInline(admin.StackedInline):
+    model = Comment
+    extra = 0
+
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'publish', 'created', 'status')
@@ -19,6 +29,7 @@ class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     list_editable = ('status',)
     list_display_links = ('title', 'author')
+    inlines = [ImageInline, CommentInline]
 
 
 @admin.register(Ticket)
