@@ -42,12 +42,18 @@
             منتشر نشده
             {% endif %}
         </td>
-        <td><a href="#">ویراش</a></td>
-        <td><a href="#">حذف</a></td>
+        <td><a href="{% url 'post:edit_post' post.id %}">ویراش</a></td>
+        <td><a href="{% url 'post:delete_post' post.id %}">حذف</a></td>
         <td><a href="#">نظرات</a></td>
     </tr>
     {% endfor %}
 </table>
+<br>
+<h3><a href="{% url 'post:password_change' %}">تغییر رمز عبور</a></h3>
+<form method="post" action="{% url 'post:logout' %}">
+    {% csrf_token %}
+    <input type="submit" value="خروج از حساب کاربری">
+</form>
 <br>
 <h4><a href="{% url 'post:index' %}">بازگشت به خانه</a></h4>
 {% endblock body %}

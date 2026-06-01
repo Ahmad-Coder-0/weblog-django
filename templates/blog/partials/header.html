@@ -3,4 +3,8 @@
     <input type="submit" value="جستجو">
 </form>
 <br>
-<h4><a href="{% url 'post:profile' %}">پروفایل</a></h4>
+{% if request.user.is_authenticated %}
+<h4><a href="{% url 'post:profile' %}">{{ request.user.first_name|default:request.user.username }}</a></h4>
+{% else %}
+<h4><a href="{% url 'post:login' %}">ورود</a></h4>
+{% endif %}

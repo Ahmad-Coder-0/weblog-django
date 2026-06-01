@@ -1,0 +1,22 @@
+{% extends 'blog/parent/base.html' %}
+
+{% block title %}حذف پست {{ post.title }}{% endblock title %}
+
+{% block body %}
+<center>
+    <h1>حذف کردن پست</h1>
+</center>
+<br>
+<br>
+<h2>آیا از حذف پست ({{ post.title|truncatewords:3 }}) مطمئن هستید؟</h2>
+<form method="post">
+    {% csrf_token %}
+    <input type="checkbox" id="delete_id" name="delete" value="DEL">
+    <label for="delete_id">از حذف پست خود مطمئن هستم.</label>
+    <br>
+    <input type="submit" value="حذف">
+</form>
+<br>
+<br>
+<a href="{% url 'post:profile' %}">بازگشت به پروفایل</a>
+{% endblock body %}

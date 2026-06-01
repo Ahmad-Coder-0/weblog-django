@@ -105,18 +105,18 @@ class SearchForm(forms.Form):
     query = forms.CharField(label="جست و جو")
 
 
-class AddPostForm(forms.ModelForm):
-    image_1 = forms.ImageField(label='تصویر اول', required=False)
-    image_1_title = forms.CharField(
-        max_length=150, label='عنوان تصویر اول', required=False)
-    image_1_description = forms.CharField(
-        widget=forms.Textarea, label='جزئیات تصویر اول', required=False)
-    image_2 = forms.ImageField(label='تصویر دوم', required=False)
-    image_2_title = forms.CharField(
-        max_length=150, label='عنوان تصویر دوم', required=False)
-    image_2_description = forms.CharField(
-        widget=forms.Textarea, label='جزئیات تصویر دوم', required=False)
+ImageFormSet = forms.inlineformset_factory(
+    Post, Image,
+    fields=('image_file', 'title', 'description'),
+    extra=2, max_num=2
+)
 
+
+class AddPostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('title', 'description', 'reading_time')
+        
+# class LoginForm(forms.Form):
+#     username = forms.CharField(max_length=20, required=True)
+#     password = forms.CharField(max_length=20, required=True, widget=forms.PasswordInput)

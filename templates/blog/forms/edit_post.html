@@ -1,12 +1,12 @@
 {% extends 'blog/parent/base.html' %}
 
 {% block title %}
-ایجاد پست
+ویرایش پست
 {% endblock title %}
 
 {% block body %}
 <center>
-    <h1>ایجاد پست</h1>
+    <h1>ویرایش پست</h1>
 </center>
 <br>
 <br>
@@ -22,6 +22,9 @@
     <p>
         <label>{{ img_form.image_file.label }}</label>
         {{ img_form.image_file }}
+        {% if img_form.instance.image_file.url and img_form.instance.image_file.name %}
+        <img src="{{ img_form.instance.image_file.url }}" alt="{{ img_form.instance.title }}">
+        {% endif %}
     </p>
     <p>
         <label>{{ img_form.title.label }}</label>
@@ -32,7 +35,6 @@
         {{ img_form.description }}
     </p>
     {% endfor %}
-
-    <input type="submit" value="ایجاد">
+    <input type="submit" value="ویرایش">
 </form>
 {% endblock body %}

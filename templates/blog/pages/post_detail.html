@@ -11,7 +11,9 @@
 
 
 {% with post.images.all|slice:":1"|first as img %}
+{% if img.image_file %}
 <img src="{{ img.image_file.url }}" alt="{{ img.title }}">
+{% endif %}
 {% endwith %}
 
 <h3 dir="auto" class="description">جزئیات: {{ post.description|markdown }}</h3>
@@ -25,6 +27,7 @@
 <h3 dir="auto" class="author">تاریخ انتشار: {{ post.publish|jformat:"%Y/%m/%d" }}</h3>
 <h3>اسلاگ: {{ post.slug }}</h3>
 <br>
+{% if post.status == "PB" %}
 <br>
 {{ comments.count }} نظرات
 <br>
@@ -45,6 +48,7 @@
     <input type="submit" value="ثبت">
 </form>
 <br>
+{% endif %}
 <h4><a href="{% url 'post:post_list' %}">بازگشت به لیست پست ها</a></h4>
 <h4><a href="{% url 'post:index' %}">بازگشت به خانه</a></h4>
 {% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'blog/parent/base.html' %}
+
+
+{% block title %}
+ورود به حساب کاربری
+{% endblock title %}
+
+
+{% block body %}
+<center>
+    <h1>ورود به حساب کاربری</h1>
+</center>
+<h2>لطفا فرم های زیر را پر کنید</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <h3><a href="{% url 'post:password_reset' %}">فراموشی رمز عبور</a></h3>
+    <input type="hidden" name="next" value="{{ next }}">
+    <input type="submit" value="ورود">
+</form>
+{% endblock body %}

@@ -131,7 +131,7 @@ class Image(models.Model):
         Post, on_delete=models.CASCADE, related_name="images", verbose_name="پست")
     image_file = ResizedImageField(
         upload_to=get_jalali_upload_path, size=[800, 600],
-        crop=['middle', 'center'], quality=80)
+        crop=['middle', 'center'], quality=80, blank=True, null=True)
     title = models.CharField(
         max_length=150, verbose_name="عنوان", null=True, blank=True)
     description = models.TextField(
