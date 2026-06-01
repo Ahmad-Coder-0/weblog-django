@@ -1,0 +1,42 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+env/
+venv/
+blog_env/
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+db.sqlite3
+
+# Media files
+/media/
+
+# Cache and build directories
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.pyre/
+
+# Editor temporary files
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+*.DS_Store
+
+# Distribution / packaging
+*.egg-info/
+build/
+dist/
+*.egg
