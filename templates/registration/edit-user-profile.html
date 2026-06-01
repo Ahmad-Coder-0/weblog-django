@@ -1,0 +1,13 @@
+{% extends 'blog/parent/base.html' %}
+
+{% block title %}ویرایش اطلاعات شخصی{% endblock %}
+
+{% block body %}
+<h2>ویرایش اطلاعات شخصی</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ user_form.as_p }}
+    {{ account_form.as_p }}
+    <button type="submit">ذخیره تغییرات</button>
+</form>
+{% endblock %}

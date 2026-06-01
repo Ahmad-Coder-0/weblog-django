@@ -59,3 +59,11 @@ class ImageAdmin(admin.ModelAdmin):
     search_fields = ('title', 'description', 'post')
     ordering = ('-created',)
     raw_id_fields = ('post',)
+
+
+@admin.register(Account)
+class AccountAdmin(admin.ModelAdmin):
+    list_display = ('user', 'birth_day_date', 'job')
+    search_fields = ('user', 'bio', 'job')
+    raw_id_fields = ('user',)
+    

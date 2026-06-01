@@ -15,7 +15,7 @@ urlpatterns = [
     path('profile/add-post', views.add_post, name="add_post"),
     path('profile/delete-post/<int:pk>', views.delete_post, name='delete_post'),
     path('profile/edit-post/<int:pk>', views.edit_post, name="edit_post"),
-    path('login/', AuthViews.LoginView.as_view(), name='login'),
+    path('login/', AuthViews.LoginView.as_view(redirect_authenticated_user=True), name='login'),
     path('logout/', AuthViews.LogoutView.as_view(), name='logout'),
     path('password-change/', AuthViews.PasswordChangeView.as_view(success_url='done'),
          name="password_change"),
@@ -29,4 +29,6 @@ urlpatterns = [
          name='password_reset_confirm'),
     path('password-reset/complate/', AuthViews.PasswordResetCompleteView.as_view(),
          name='password_reset_complate'),
+    path('register/', views.register, name="register"),
+    path('profile/edit-user-profile/', views.edit_profile, name='edit_profile'),
 ]

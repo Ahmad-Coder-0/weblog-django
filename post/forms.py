@@ -116,7 +116,41 @@ class AddPostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('title', 'description', 'reading_time')
-        
-# class LoginForm(forms.Form):
-#     username = forms.CharField(max_length=20, required=True)
-#     password = forms.CharField(max_length=20, required=True, widget=forms.PasswordInput)
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=20, required=True)
+    password = forms.CharField(
+        max_length=20, required=True, widget=forms.PasswordInput)
+
+
+class UserRegisterForm(forms.ModelForm):
+    password = forms.CharField(
+        max_length=20, widget=forms.PasswordInput, label="گذرواژه")
+    password_confirm = forms.CharField(
+        max_length=20, widget=forms.PasswordInput, label="تایید گذرواژه")
+
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email']
+
+    def clean_password_confirm(self):
+        cd = self.cleaned_data
+        if cd['password_confirm'] != cd['password']:
+            raise forms.ValidationError(
+                "گذرواژه ها یکی نیستند لطفا دوباره وارد کنید گذرواژه را.")
+
+        return cd['password_confirm']
+
+
+class EditUserForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+
+
+class EditAccountForm(forms.ModelForm):
+    class Meta:
+        model = Account
+        fields = ['birth_day_date', 'job', 'bio', 'photo']

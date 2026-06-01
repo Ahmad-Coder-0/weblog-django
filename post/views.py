@@ -271,3 +271,73 @@ def edit_post(request, pk):
         'post': post,
     }
     return render(request, 'blog/forms/edit_post.html', context)
+
+
+# def user_login(request):
+#     if not request.user.is_authenticated:
+#         if request.method == "POST":
+#             form = LoginForm(request.POST)
+#             if form.is_valid():
+#                 cd = form.cleaned_data
+#                 user = authenticate(
+#                     request, username=cd['username'], password=cd['password'])
+#                 if user is not None:
+#                     if user.is_active:
+#                         login(user)
+#                         return redirect("post:profile")
+#                     else:
+#                         return HttpResponse("حساب شما غیر فعال است لطفا با پشتیبانی تماس بگیرید")
+#                 else:
+#                     return HttpResponse("نام کاربری یا رمز عبور شما اشتباه است")
+#         else:
+#             form = LoginForm()
+#         context = {
+#             'form': form,
+#         }
+#         return render(request, 'registration/login.html', context)
+#     else:
+#         return redirect("post:profile")
+
+
+def register(request):
+    if not request.user.is_authenticated:
+        if request.method == "POST":
+            form = UserRegisterForm(request.POST)
+            if form.is_valid():
+                cd = form.cleaned_data
+                user = form.save(commit=False)
+                user.set_password(cd['password'])
+                user.save()
+                Account.objects.create(user=user)
+                login(request, user)
+                return redirect("post:profile")
+        else:
+            form = UserRegisterForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'registration/register.html', context)
+    else:
+        return redirect("post:profile")
+
+
+@login_required
+def edit_profile(request):
+    user = request.user
+    if request.method == "POST":
+        user_form = EditUserForm(request.POST, instance=user)
+        account_form = EditAccountForm(
+            request.POST, request.FILES, instance=user.account)
+        if user_form.is_valid() and account_form.is_valid():
+            user_form.save()
+            account_form.save()
+            return redirect("post:profile")
+    else:
+        user_form = EditUserForm(instance=user)
+        account_form = EditAccountForm(instance=user.account)
+
+    context = {
+        'user_form': user_form,
+        'account_form': account_form,
+    }
+    return render(request, 'registration/edit-user-profile.html', context)

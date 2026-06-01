@@ -1,0 +1,17 @@
+{% extends 'blog/parent/base.html' %}
+
+{% block title %}
+ثبت نام
+{% endblock title %}
+
+{% block body %}
+<center>
+    <h1>ایحاد حساب</h1>
+</center>
+<h2>اطلاعات زیر را کامل کنید</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="ثبت نام">
+</form>
+{% endblock body %}

@@ -149,3 +149,24 @@ class Image(models.Model):
         ]
         verbose_name = "تصویر"
         verbose_name_plural = "تصاویر"
+
+
+class Account(models.Model):
+    user = models.OneToOneField(
+        User, related_name='account', on_delete=models.CASCADE, verbose_name="کاربر")
+    birth_day_date = jmodels.jDateField(verbose_name="تاریخ تولد")
+    bio = models.TextField(verbose_name="بیوگرافی", max_length=300)
+    photo = ResizedImageField(upload_to="profile_images", size=[500, 500],
+                              crop=['middle', 'center'], quality=60, blank=True, null=True)
+    job = models.CharField(max_length=100, blank=True, null=True, verbose_name="شغل")
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        ordering = ('-birth_day_date',)
+        indexes = [
+            models.Index(fields=['-birth_day_date'])
+        ]
+        verbose_name = "حساب"
+        verbose_name_plural = "حساب ها"

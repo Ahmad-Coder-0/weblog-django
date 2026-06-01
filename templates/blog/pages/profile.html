@@ -11,6 +11,13 @@
 <br>
 <h3><a href="{% url 'post:add_post' %}">ایجاد پست</a></h3>
 <br>
+<h3><a href="{% url 'post:edit_profile' %}">ویرایش اطلاعات شخصی</a></h3>
+<h3><a href="{% url 'post:password_change' %}">تغییر رمز عبور</a></h3>
+<form method="post" action="{% url 'post:logout' %}">
+    {% csrf_token %}
+    <input type="submit" value="خروج از حساب کاربری">
+</form>
+<br>
 <table style="width: 80%; border: 2px solid black; text-align: right;">
     <tr>
         <th>عنوان</th>
@@ -48,12 +55,6 @@
     </tr>
     {% endfor %}
 </table>
-<br>
-<h3><a href="{% url 'post:password_change' %}">تغییر رمز عبور</a></h3>
-<form method="post" action="{% url 'post:logout' %}">
-    {% csrf_token %}
-    <input type="submit" value="خروج از حساب کاربری">
-</form>
 <br>
 <h4><a href="{% url 'post:index' %}">بازگشت به خانه</a></h4>
 {% endblock body %}
