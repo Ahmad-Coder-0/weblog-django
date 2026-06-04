@@ -23,8 +23,19 @@
 {% endfor %}
 
 <br>
-{% include 'blog/partials/pagination.html' with page=page_obj %}
+{% include 'blog/partials/pagination.html' with page=posts %}
 <br>
-
+<h3>دسته بندی ها</h3>
+<br>
+<a href="{% url 'post:post_list_category' 'تکنولوژی' %}">تکنولوژی</a>
+<br>
+<a href="{% url 'post:post_list_category' 'برنامه نویسی' %}">برنامه نویسی</a>
+<br>
+<a href="{% url 'post:post_list_category' 'هوش مصنوعی' %}">هوش مصنوعی</a>
+<br>
+<a href="{% url 'post:post_list_category' 'بلاکچین' %}">بلاکچین</a>
+<br>
+<a href="{% url 'post:post_list_category' 'سایر' %}">سایر</a>
+<br>
 <h4><a href="{% url 'post:index' %}">بازگشت به خانه</a></h4>
 {% endblock %}

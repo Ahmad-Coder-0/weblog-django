@@ -25,9 +25,16 @@ class Post(models.Model):
         DRAFT = 'DF', 'پیش نویس'
         REJECTED = 'RJ', 'رد شده'
 
+    CATEGORY_CHOICES = (
+        ('تکنولوژی', 'تکنولوژی'),
+        ('برنامه نویسی', 'برنامه نویسی'),
+        ('هوش مصنوعی', 'هوش مصنوعی'),
+        ('بلاکچین', 'بلاکچین'),
+        ('سایر', 'سایر')
+    )
+
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='posts', verbose_name='نویسنده')
-
     title = models.CharField(max_length=200, verbose_name='عنوان')
     description = models.TextField(verbose_name='جزئیات')
     slug = models.SlugField(
@@ -42,6 +49,8 @@ class Post(models.Model):
     status = models.CharField(max_length=2, choices=Status.choices, default=Status.DRAFT,
                               verbose_name='وضعیت')
     reading_time = models.PositiveIntegerField(verbose_name='زمان مطالعه')
+    category = models.CharField(
+        max_length=20, choices=CATEGORY_CHOICES, default='سایر', verbose_name='دسته بندی')
 
     objects = jmodels.jManager()
     published = PublishedManager()
@@ -154,11 +163,12 @@ class Image(models.Model):
 class Account(models.Model):
     user = models.OneToOneField(
         User, related_name='account', on_delete=models.CASCADE, verbose_name="کاربر")
-    birth_day_date = jmodels.jDateField(verbose_name="تاریخ تولد")
-    bio = models.TextField(verbose_name="بیوگرافی", max_length=300)
+    birth_day_date = jmodels.jDateField(verbose_name="تاریخ تولد", blank=True, null=True)
+    bio = models.TextField(verbose_name="بیوگرافی", max_length=300, blank=True, null=True)
     photo = ResizedImageField(upload_to="profile_images", size=[500, 500],
                               crop=['middle', 'center'], quality=60, blank=True, null=True)
-    job = models.CharField(max_length=100, blank=True, null=True, verbose_name="شغل")
+    job = models.CharField(max_length=100, blank=True,
+                           null=True, verbose_name="شغل")
 
     def __str__(self):
         return self.user.username

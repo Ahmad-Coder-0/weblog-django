@@ -12,27 +12,32 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView, DeleteView, CreateView, FormView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.contrib.auth.models import User
 
 
 def index(request):
     return render(request, 'blog/pages/index.html')
 
 
-class PostListView(ListView):
-    queryset = Post.published.all().order_by('-publish')
-    paginate_by = 2
-    template_name = 'blog/pages/post_list.html'
-    context_object_name = 'posts'
+# class PostListView(ListView):
+#     queryset = Post.published.all().order_by('-publish')
+#     paginate_by = 2
+#     template_name = 'blog/pages/post_list.html'
+#     context_object_name = 'posts'
 
-# def post_list(request):
-#     posts = Post.published.order_by('-publish')
-#     paginator = Paginator(posts, 2)
-#     page_number = request.GET.get('page', 1)
-#     posts = paginator.get_page(page_number)
-#     context = {
-#         'posts': posts,
-#     }
-#     return render(request, 'blog/pages/post_list.html', context)
+def post_list(request, category=None):
+    if category:
+        posts = Post.published.filter(category=category)
+    else:
+        posts = Post.published.order_by('-publish')
+    paginator = Paginator(posts, 2)
+    page_number = request.GET.get('page', 1)
+    posts = paginator.get_page(page_number)
+    context = {
+        'posts': posts,
+        'category': category,
+    }
+    return render(request, 'blog/pages/post_list.html', context)
 
 
 class PostDetailView(DetailView):
@@ -189,6 +194,7 @@ class SearchView(View):
 class ProfileView(LoginRequiredMixin, ListView):
     template_name = 'blog/pages/profile.html'
     context_object_name = 'posts'
+    paginate_by=3
 
     def get_queryset(self):
         return self.request.user.posts.all().order_by('-created')
@@ -341,3 +347,22 @@ def edit_profile(request):
         'account_form': account_form,
     }
     return render(request, 'registration/edit-user-profile.html', context)
+
+
+def profile_view(request, user_id):
+    user = get_object_or_404(User, id=user_id, is_active=True)
+    user_photo = user.account.photo
+    user_birth_day_date = user.account.birth_day_date
+    user_bio = user.account.bio
+    user_job = user.account.job
+    user_posts = user.posts.filter(status=Post.Status.PUBLISHED).order_by('-publish')
+    context = {
+        'user': user,
+        'user_photo': user_photo,
+        'user_birth_day_date': user_birth_day_date,
+        'user_bio': user_bio,
+        'user_job': user_job,
+        'user_posts': user_posts,
+    }
+    return render(request, 'blog/pages/profile_view.html', context)
+

@@ -5,8 +5,9 @@ from django.contrib.auth import views as AuthViews
 app_name = 'post'
 urlpatterns = [
     path('', views.index, name='index'),
-    path('posts/', views.PostListView.as_view(), name='post_list'),
-    path('posts/<int:pk>/', views.PostDetailView.as_view(), name='post_detail'),
+    path('posts/', views.post_list, name='post_list'),
+    path('posts/<str:category>', views.post_list, name='post_list_category'),
+    path('post/<int:pk>/', views.PostDetailView.as_view(), name='post_detail'),
     path('tickets/', views.TicketCreateView.as_view(), name='tickets'),
     path('posts/<int:pk>/comment',
          views.PostCommentView.as_view(), name='post_comment'),
@@ -31,4 +32,5 @@ urlpatterns = [
          name='password_reset_complate'),
     path('register/', views.register, name="register"),
     path('profile/edit-user-profile/', views.edit_profile, name='edit_profile'),
+    path('profile-view/<int:user_id>/', views.profile_view, name='profile_view'),
 ]

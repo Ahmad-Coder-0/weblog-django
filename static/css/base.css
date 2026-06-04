@@ -121,10 +121,3 @@ body {
     padding-right: 10px;
 }
 
-.author {
-    transition: 0.5s;
-}
-
-.author:hover {
-    transform: scale(0.9);
-}

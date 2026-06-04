@@ -55,6 +55,7 @@
     </tr>
     {% endfor %}
 </table>
+{% include 'blog/partials/pagination.html' with page=page_obj %}
 <br>
 <h4><a href="{% url 'post:index' %}">بازگشت به خانه</a></h4>
 {% endblock body %}

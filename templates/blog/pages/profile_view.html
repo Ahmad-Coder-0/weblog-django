@@ -1,0 +1,43 @@
+{% extends 'blog/parent/base.html' %}
+
+{% block title %}{{ user.username }} - پروفایل{% endblock %}
+
+{% block body %}
+<div class="profile-page">
+    <div class="profile-card">
+        <div class="profile-avatar">
+            {% if user_photo %}
+            <img src="{{ user_photo.url }}" alt="عکس پروفایل {{ user.username }}">
+            {% else %}
+            <div class="no-avatar">عکس پروفایل موجود نیست</div>
+            {% endif %}
+        </div>
+
+        <div class="profile-info">
+            <h1>{{ user.username }}</h1>
+            <p><strong>نام و نام خانوادگی:</strong> {{ user.get_full_name|default:"نام مشخص نشده است" }}</p>
+            <p><strong>ایمیل:</strong> {{ user.email|default:"ایمیل مشخص نشده است" }}</p>
+            <p><strong>تاریخ تولد:</strong> {{ user_birth_day_date|default:"تاریخ تولد مشخص نشده است" }}</p>
+            <p><strong>شغل:</strong> {{ user_job|default:"شغل مشخص نشده است" }}</p>
+            <p><strong>درباره من:</strong> {{ user_bio|default:"بیوگرافی مشخص نشده است" }}</p>
+        </div>
+    </div>
+
+    <div class="profile-posts">
+        <h2>پست های منتشر شده</h2>
+        {% if user_posts %}
+        <div class="posts-list">
+            {% for post in user_posts %}
+            <div class="post-item">
+                <h3><a href="{% url 'post:post_detail' post.id %}">{{ post.title }}</a></h3>
+                <p>{{ post.description|truncatewords:20 }}</p>
+                <small>تاریخ انتشار: {{ post.publish }}</small>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>این کاربر هیچ پستی منتشر نکرده است.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

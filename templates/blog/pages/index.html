@@ -14,8 +14,16 @@
 <h2>آمار</h2>
 <br>
 {% last_post_date as lpd %}
+{% random_post as rp %}
 <div class="status">
     <h3>
+        <p>
+            پیشنهاد شده برای شما : 
+            <br>
+            <br>
+            <a href="{{ rp.get_absolute_url }}">{{ rp.title }}</a>
+        </p>
+        <hr>
         <p>تعداد پست ها: {% total_posts %}</p>
         <p>تعداد کامنت ها: {% total_comments %}</p>
         <p>تاریخ آخرین پست: {{ lpd|jformat:"%Y/%m/%d" }}</p>

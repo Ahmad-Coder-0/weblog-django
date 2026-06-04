@@ -115,7 +115,7 @@ ImageFormSet = forms.inlineformset_factory(
 class AddPostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'description', 'reading_time')
+        fields = ('title', 'description', 'reading_time', 'category')
 
 
 class LoginForm(forms.Form):

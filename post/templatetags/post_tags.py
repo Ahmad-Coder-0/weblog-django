@@ -2,6 +2,7 @@ from django import template
 from django.db.models import Count
 from django.utils.safestring import mark_safe
 from markdown import markdown
+from random import choice
 
 from ..models import *
 
@@ -41,3 +42,8 @@ def latest_posts(count=1):
 @register.filter(name='markdown')
 def to_markdown(text):
     return mark_safe(markdown(text))
+
+
+@register.simple_tag
+def random_post():
+    return choice(Post.published.all())

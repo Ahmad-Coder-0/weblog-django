@@ -22,7 +22,7 @@
 <img src="{{ img.image_file.url }}" alt="{{ img.title }}">
 {% endwith %}
 
-<h3 dir="auto" class="author">نویسنده: {{ post.author }}</h3>
+<h3 dir="auto" class="author"><a href="{% url 'post:profile_view' post.author.id %}">نویسنده: {{ post.author }}</a></h3>
 <h3 dir="auto" class="author">تاریخ ایجاد: {{ post.created|jformat:"%Y/%m/%d" }}</h3>
 <h3 dir="auto" class="author">تاریخ انتشار: {{ post.publish|jformat:"%Y/%m/%d" }}</h3>
 <h3>اسلاگ: {{ post.slug }}</h3>
